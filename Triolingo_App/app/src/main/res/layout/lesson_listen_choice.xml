@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="@drawable/custom_blur_popup"
+    android:id="@+id/main_layout">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/lesson_header" />
+
+        <include
+            android:id="@+id/include2"
+            layout="@layout/lesson_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        <TextView
+            android:id="@+id/lesson_text_listen"
+            android:layout_width="357dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="What do you hear ?"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="180dp"
+            android:orientation="horizontal"
+            app:constraint_referenced_ids="lesson_ans_1, lesson_ans_2,
+lesson_ans_3, lesson_ans_4"
+            app:flow_horizontalGap="14dp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalGap="14dp"
+
+            app:flow_wrapMode="chain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/lesson_ans_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_btn_ans"
+            android:text="Khoai tây"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toStartOf="@+id/lesson_ans_2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/flow_layout" />
+
+        <Button
+            android:id="@+id/lesson_ans_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_btn_ans"
+            android:text="Button"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/lesson_ans_1"
+            app:layout_constraintTop_toTopOf="@id/flow_layout" />
+
+        <Button
+            android:id="@+id/lesson_ans_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_btn_ans"
+            android:text="Button"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toStartOf="@+id/lesson_ans_4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lesson_ans_1" />
+
+        <Button
+            android:id="@+id/lesson_ans_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_btn_ans"
+            android:text="Button"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/lesson_ans_3"
+            app:layout_constraintTop_toBottomOf="@+id/lesson_ans_2" />
+
+        <Button
+            android:id="@+id/lesson_listen_btn"
+            android:layout_width="59dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/custom_btn_listen"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lesson_text_listen" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/lesson_answer_correct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom" />
+
+    <include
+        layout="@layout/lesson_answer_incorrect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>

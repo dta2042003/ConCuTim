@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEF3E8"
+    android:backgroundTint="#FAFFFFFF"
+    tools:context=".Units.ListUnits">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/unit_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="-30dp"
+        app:cardBackgroundColor="#8BC34A"
+        app:cardCornerRadius="@dimen/border_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/course_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-light"
+            android:text="453K"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/course_return"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="15dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_2" />
+
+        <Button
+            android:id="@+id/btn_backToAccount"
+            android:layout_width="122dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="280dp"
+            android:layout_marginTop="32.5dp"
+            android:backgroundTint="#4CAF50"
+            android:text="@string/btn_desc"
+            android:textSize="12sp"
+            app:cornerRadius="@dimen/border_radius" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_unit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

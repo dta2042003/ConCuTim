@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="progressbar_background">#E5E5E5</color>
+    <color name="progressbar_process">#58CC02</color>
+    <color name="correct_text">#58A700</color>
+    <color name="correct_background">#D7FFB8</color>
+    <color name="incorrect_background">#FFDFE0</color>
+    <color name="incorrect_text">#EC0B1B</color>
+    <color name="btn_check_ans">#E5E5E5</color>
+    <color name="text_check_ans">#B4AFAF</color>
+    <color name="stroke_border_ans">#E5E5E5</color>
+    <color name="btn_ans_choice">#DDF4FF</color>
+    <color name="incorrect_ans">#885E62</color>
+    <color name="correct_ans">#C7F396</color>
+
+    <color name="colorPrimary">#49BEFF</color>
+    <color name="colorPrimaryDark">#65DCE5</color>
+    <color name="colorAccent">#0D5D98</color>
+
+    <color name="address">#2F7092</color>
+    <color name="followers">#0D5D98</color>
+    <color name="headings">#3797CF</color>
+    <color name="solidCircle">#AAFFFFFF</color>
+    <color name="circleBorder">#50FFFFFF</color>
+    <color name="followersBg">#65DCE5</color>
+    <color name="followingBg">#49BEFF</color>
+    <color name="grey">#E5E5E5</color>
+</resources>

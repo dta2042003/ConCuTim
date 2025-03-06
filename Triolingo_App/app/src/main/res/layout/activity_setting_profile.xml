@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingProfileActivity">
+    <RelativeLayout
+        android:id="@+id/rellay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/progressbar_process"
+        android:paddingBottom="20dp">
+
+        <RelativeLayout
+            android:id="@+id/imgUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/circle_border">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageview_account_profile"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="2dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/imageview_account_profile"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_edit"
+                app:rippleColor="@color/white" />
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/btnSave"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_correct" />
+        <ImageView
+            android:id="@+id/btnClose"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_2" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rellay1">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="64dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/unit_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_text">
+
+            <EditText
+                android:id="@+id/editTextTextEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_edittext_back"
+                android:ems="10"
+                android:enabled="false"
+                android:fontFamily="sans-serif-medium"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:linksClickable="false"
+                android:paddingStart="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_edittext_back"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="Họ tên"
+                android:inputType="textPersonName"
+                android:paddingStart="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp" />
+
+            <EditText
+                android:id="@+id/editTextTextPassword2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_edittext_back"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="Mật khẩu"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp" />
+
+            <EditText
+                android:id="@+id/editTextTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/custom_edittext_back"
+                android:ems="10"
+                android:fontFamily="sans-serif-medium"
+                android:hint="Nhập lại mật khẩu"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout >

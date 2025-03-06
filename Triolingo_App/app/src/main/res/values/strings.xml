@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Triolingo_Mobile</string>
+    <string name="lesson_close">lesson_close</string>
+    <string name="lesson_correct">Đúng rồi!</string>
+    <string name="lesson_incorrect">Sai rồi !</string>
+    <string name="lesson_correct_ans">Đáp án đúng: </string>
+    <string name="btn_continue">TIẾP TỤC</string>
+    <string name="btn_check">KIỂM TRA</string>
+    <string name="btn_quit">THOÁT</string>
+    <string name="btn_cancel">HỦY</string>
+    <string name="btn_desc">MÔ TẢ</string>
+    <string name="lesson_close_text"><b>Bạn có chắc muốn thoát không?</b>\nToàn bộ tiến trình của bài học này sẽ bị mất.</string>
+    <string name="update_profile_user_sucess">Cập nhật thành công!</string>
+    <string name="update_profile_user_fail">Cập nhật thất bại!</string>
+    <string name="repass_not_match_pass">Không khớp với mật khẩu!</string>
+    <string name="lesson_complete">Bài học\nĐã hoàn thành!</string>
+    <string name="lesson_exp">Tổng kinh nghiệm đã có: 30 EXP</string>
+    <string name="lesson_score">Điểm:</string>
+    <string name="register_new_account">Đăng ký tài khoản mới</string>
+    <string name="go_back">Quay lại</string>
+    <string name="email_placeholder">Email</string>
+    <string name="fullName_placeholder">Họ tên</string>
+    <string name="password_placeholder">Mật khẩu</string>
+    <string name="repass_placeholder">Nhập lại mật khẩu</string>
+    <string name="register_bt">Đăng ký</string>
+    <string name="register_policy_confirm">Bằng cách đăng ký tài khoản trên Triolingo, bạn đồng ý với tất cả các Câu hỏi thường gặp của chúng tôi</string>
+    <string name="upload_image_fail_message">Ảnh không tồn tại hoặc không đọc được!!</string>
+    <string name="email_is_empty">Email không được để trống</string>
+    <string name="email_invalid">Email không hợp lệ</string>
+    <string name="email_exist">Email đã được đăng ký rồi</string>
+    <string name="name_is_empty">Họ tên không được để trống</string>
+    <string name="password_is_empty">Mật khẩu không được để trống</string>
+    <string name="repass_not_match">Mật khẩu nhập lại không khớp!</string>
+</resources>

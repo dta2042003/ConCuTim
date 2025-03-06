@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="@drawable/custom_blur_popup"
+    android:id="@+id/main_layout">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/lesson_header" />
+
+        <include
+            android:id="@+id/include2"
+            layout="@layout/lesson_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        <TextView
+            android:id="@+id/lesson_text_ques"
+            android:layout_width="357dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="16dp"
+            android:text="Reading this"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <ScrollView
+            android:id="@+id/scroll_reading"
+            android:layout_width="379dp"
+            android:layout_height="452dp"
+            android:layout_marginBottom="96dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/include2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck">
+
+            <TextView
+                android:id="@+id/lesson_reading_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/custom_tv_reading"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lesson_text_ques" />
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/lesson_answer_correct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
+
+</FrameLayout>
