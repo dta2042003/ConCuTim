@@ -29,11 +29,11 @@
                 android:paddingVertical="16dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="119dp"
+                    android:layout_height="119dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:text="Here’s\nyour first\nstep with\nus!"
+                    android:text="Chào mừng bạn\nđến với\nchúng tôi!"
                     android:textColor="@color/purple_main"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -50,7 +50,7 @@
                     android:layout_width="151dp"
                     android:layout_height="133dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="116dp"
+                    android:layout_marginEnd="106dp"
                     android:padding="2dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_avatar"
