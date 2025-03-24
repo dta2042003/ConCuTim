@@ -28,10 +28,10 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="152dp"
+                    android:layout_height="149dp"
                     android:layout_centerVertical="true"
-                    android:text="Already \nhave an \nAccount?"
+                    android:text="Bạn đã\ncó tài khoản\nrồi chứ?"
                     android:textColor="@color/purple_main"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -159,6 +159,7 @@
                     android:src="@drawable/ic_facebook" />
 
                 <ImageView
+                    android:id="@+id/btnGoogleSignIn"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_google_plus"
@@ -177,6 +178,7 @@
         android:background="@drawable/ic_side_bg" />
 
     <ImageView
+        android:id="@+id/imgGoToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -110,4 +110,44 @@ public class UserDAO extends DbContext {
         return true;
     }
 
+    public int insertUser(UserEntity us) {
+        String sql = "INSERT INTO [User] (FullName, Email, Password, Status, AvatarUrl) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, us.getFullNamel());
+            pre.setString(2, us.getEmail());
+            pre.setString(3, us.getPassword()); // có thể là null hoặc "GOOGLE_LOGIN"
+            pre.setInt(4, us.getStatus());
+            pre.setString(5, us.getAvatarUrl()); // base64 hoặc null
+            return pre.executeUpdate();
+        } catch (SQLException e) {
+            Log.e("UserDAO", "Insert error", e);
+        }
+        return 0;
+    }
+
+    public UserEntity getUserByEmail(String email) {
+        String sql = "SELECT * FROM [User] WHERE Email = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                UserEntity us = new UserEntity();
+                us.setId(rs.getInt("Id"));
+                us.setFullNamel(rs.getString("FullName"));
+                us.setEmail(rs.getString("Email"));
+                us.setPassword(rs.getString("Password"));
+                us.setAvatarUrl(rs.getString("AvatarUrl"));
+                us.setStatus(rs.getInt("Status"));
+                us.setNote(rs.getString("Note"));
+                return us;
+            }
+        } catch (Exception e) {
+            Log.e("UserDAO", "getUserByEmail error", e);
+        }
+        return null;
+    }
+
+
 }
