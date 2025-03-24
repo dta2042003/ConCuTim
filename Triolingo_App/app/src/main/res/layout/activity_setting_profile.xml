@@ -9,7 +9,7 @@
         android:id="@+id/rellay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/progressbar_process"
+        android:background="@color/black"
         android:paddingBottom="20dp">
 
         <RelativeLayout
@@ -27,8 +27,8 @@
                 android:layout_height="150dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/ic_launcher"
-                app:civ_border_color="#FFFFFF"
+                android:src="@drawable/ic_default_avatar"
+                app:civ_border_color="@color/purple_main"
                 app:civ_border_width="2dp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,11 +37,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/imageview_account_profile"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
                 android:src="@drawable/ic_edit"
+                app:backgroundTint="@color/purple_main"
                 app:rippleColor="@color/white" />
-
-
         </RelativeLayout>
 
         <ImageView
@@ -71,7 +71,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rellay1">
+        android:layout_below="@id/rellay1"
+        android:background="@color/purple_main">
 
         <LinearLayout
             android:id="@+id/linearLayout2"

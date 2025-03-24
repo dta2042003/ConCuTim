@@ -31,4 +31,7 @@
     <string name="name_is_empty">Họ tên không được để trống</string>
     <string name="password_is_empty">Mật khẩu không được để trống</string>
     <string name="repass_not_match">Mật khẩu nhập lại không khớp!</string>
+
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
 </resources>
