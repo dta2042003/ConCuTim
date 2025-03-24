@@ -1,6 +1,7 @@
 package com.example.triolingo_mobile.DAO;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.example.triolingo_mobile.DataAccess.DbContext;
@@ -26,6 +27,7 @@ public class UserDAO extends DbContext {
         if (UserDAO.instance == null) {
             UserDAO.instance = new UserDAO();
         }
+
         return UserDAO.instance;
     }
 
@@ -59,7 +61,7 @@ public class UserDAO extends DbContext {
         int n = 0;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setNString(1, us.getFullNamel());
+            pre.setString(1, us.getFullNamel());
             pre.setString(2, us.getEmail());
             pre.setString(3, us.getAvatarUrl());
             pre.setString(4, us.getPassword());

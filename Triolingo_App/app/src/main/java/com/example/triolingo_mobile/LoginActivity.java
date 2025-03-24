@@ -1,106 +1,86 @@
 package com.example.triolingo_mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.triolingo_mobile.DAO.UserDAO;
 import com.example.triolingo_mobile.Model.UserEntity;
 import com.example.triolingo_mobile.Model.UserModel;
+import com.example.triolingo_mobile.Util.UserUtil;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.triolingo_mobile.Lesson.QuestionChoice.QuestionChoiceActivity;
-
 public class LoginActivity extends AppCompatActivity {
-    EditText InputUsername;
-    EditText InputPassword;
-    Button LoginBtn;
+
+    private static final String TAG = "LoginActivity";
+
+    private TextInputEditText inputEmail;
+    private TextInputEditText inputPassword;
+    private MaterialButton loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        InputUsername = findViewById(R.id.userNameTxt);
-        InputPassword = findViewById(R.id.passwordTxt);
-        LoginBtn = findViewById(R.id.loginBtn);
 
-        InputUsername.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String UserName = InputUsername.getText().toString().trim();
-                String Password = InputPassword.getText().toString().trim();
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (!UserName.isEmpty() && !Password.isEmpty()) {
-                        LoginBtn.setEnabled(true);
-                        LoginBtn.setBackgroundColor(Color.BLUE);
-                        LoginBtn.setTextColor(Color.parseColor("#FFFFFF"));
+        inputEmail = findViewById(R.id.editTextEmail);
+        inputPassword = findViewById(R.id.editTextPassword);
+        loginBtn = findViewById(R.id.loginBtn);
 
-                    } else {
-                        LoginBtn.setEnabled(false);
-                        LoginBtn.setBackgroundColor(Color.parseColor(("#5E756969")));
-                        LoginBtn.setTextColor(Color.parseColor("#BAEFE2E2"));
-                    }
-                    return true;
-                }
-                return false;
-            }
+        loginBtn.setOnClickListener(v -> {
+            loginUser();
         });
-        (findViewById(R.id.signInBtn)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
-        InputPassword.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String UserName = InputUsername.getText().toString().trim();
-                String Password = InputPassword.getText().toString().trim();
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (!UserName.isEmpty() && !Password.isEmpty()) {
-                        LoginBtn.setEnabled(true);
-                        LoginBtn.setBackgroundColor(Color.BLUE);
-                        LoginBtn.setTextColor(Color.parseColor("#FFFFFF"));
-                    } else {
-                        LoginBtn.setEnabled(false);
-                        LoginBtn.setBackgroundColor(Color.parseColor(("#5E756969")));
-                        LoginBtn.setTextColor(Color.parseColor("#BAEFE2E2"));
-                    }
-                    return true;
-                }
-                return false;
-            }
+
+        TextView registerBtn = findViewById(R.id.registerBtn);
+        registerBtn.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
 
-    public void LoginBtn(View v) {
-        String Email = InputUsername.getText().toString().trim();
-        String Password = InputPassword.getText().toString().trim();
-        UserModel userLogin = new UserModel(Email, Password);
-        UserEntity us = UserDAO.getInstance().Login(userLogin);
-        if (us == null) {
-            InputUsername.setError("Email hoặc mật khẩu không khớp");
-        } else {
-            Gson gson = new Gson();
-            String userJson = gson.toJson(us);
-            SharedPreferences sharedPref = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("user", userJson);
-            editor.apply();
-            Intent switchActivityIntent = new Intent(this, AccountActivity.class);
-            startActivity(switchActivityIntent);
-            Toast.makeText(this, "Login successfully...", Toast.LENGTH_SHORT).show();
+    private void loginUser() {
+        String email = inputEmail.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+
+        Log.d(TAG, "Attempting login with email: " + email);
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        loginBtn.setEnabled(false);
+
+        new Thread(() -> {
+            String encryptedPassword = UserUtil.md5(password);
+            UserModel userLogin = new UserModel(email, encryptedPassword);
+
+            UserEntity userEntity = UserDAO.getInstance().Login(userLogin);
+
+            runOnUiThread(() -> {
+                loginBtn.setEnabled(true);
+
+                if (userEntity == null) {
+                    Toast.makeText(this, "Email hoặc mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Login failed: Incorrect email/password");
+                } else {
+                    Gson gson = new Gson();
+                    String userJson = gson.toJson(userEntity);
+                    SharedPreferences sharedPref = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+                    sharedPref.edit().putString("user", userJson).apply();
+
+                    Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginActivity.this, AccountActivity.class));
+                    finish();
+                }
+            });
+        }).start();
     }
 }

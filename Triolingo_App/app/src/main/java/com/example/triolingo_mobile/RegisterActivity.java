@@ -17,6 +17,7 @@ import android.widget.*;
 import com.example.triolingo_mobile.DAO.AccountDAO;
 import com.example.triolingo_mobile.DAO.UserDAO;
 import com.example.triolingo_mobile.Model.AccountModel;
+import com.example.triolingo_mobile.Util.UserUtil;
 
 import java.io.ByteArrayOutputStream;
 
@@ -35,10 +36,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        email_txt = findViewById(R.id.editTextTextEmailAddress);
-        name_txt = findViewById(R.id.editTextTextPersonName);
-        password_txt = findViewById(R.id.editTextTextPassword);
-        confirm_pw_txt = findViewById(R.id.editTextTextPassword2);
+        email_txt = findViewById(R.id.editTextEmail);
+        name_txt = findViewById(R.id.editTextName);
+        password_txt = findViewById(R.id.editTextPassword);
+        confirm_pw_txt = findViewById(R.id.editTextPassword2);
         registerBtn = findViewById(R.id.registerBtn);
         uploadImgBtn = findViewById(R.id.uploadImageButton);
         avatarView = findViewById(R.id.avatarView);
@@ -54,28 +55,34 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkRegisterInfo()) {
+                if (checkRegisterInfo()) {
+                    String email = email_txt.getText().toString().trim();
+                    String name = name_txt.getText().toString().trim();
+                    String password = password_txt.getText().toString().trim();
+
+                    // 🔒 Mã hóa mật khẩu bằng MD5
+                    String hashedPassword = UserUtil.md5(password);
+
                     AccountModel newAccount = new AccountModel(
-                            name_txt.getText().toString(),
-                            email_txt.getText().toString(),
-                            password_txt.getText().toString(),
+                            name,
+                            email,
+                            hashedPassword,
                             avatarUrl,
                             1,
-                            null);
+                            null
+                    );
 
-                    // insert with DAO
                     if (AccountDAO.getInstance().registerAccount(newAccount)) {
                         Toast.makeText(view.getContext(), "Tạo tài khoản thành công! Vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                         finish();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(view.getContext(), "Tạo tài khoản thất bại! Vui lòng thử lại sau", Toast.LENGTH_LONG).show();
                     }
                 }
             }
         });
+
 
         uploadImgBtn.setOnClickListener(this::onChangeImage);
         avatarView.setOnClickListener(this::onChangeImage);

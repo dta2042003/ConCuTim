@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.triolingo_mobile.DAO.UserDAO;
 import com.example.triolingo_mobile.Model.UserEntity;
 import com.example.triolingo_mobile.Model.UserModel;
+import com.example.triolingo_mobile.Util.UserUtil;
 import com.google.gson.Gson;
 
 //import org.apache.commons.codec.binary.Base64;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.internal.Util;
 
 public class SettingProfileActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -48,29 +50,53 @@ public class SettingProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_profile);
+
+        email = findViewById(R.id.editTextTextEmailAddress);
+        name = findViewById(R.id.editTextTextPersonName);
+        password = findViewById(R.id.editTextTextPassword2);
+        rePassword = findViewById(R.id.editTextTextPassword);
+        imageView = findViewById(R.id.imageview_account_profile);
+
+        findViewById(R.id.btnClose).setOnClickListener(this::onQuit);
+        findViewById(R.id.btnSave).setOnClickListener(this::onSave);
+        findViewById(R.id.floatingActionButton).setOnClickListener(this::onEditImage);
+
         SharedPreferences sharedPref = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         String json = sharedPref.getString("user", null);
         int userId = 0;
+
         if (json != null) {
             Gson gson = new Gson();
             UserEntity userLogin = gson.fromJson(json, UserEntity.class);
             userId = userLogin.getId();
         }
-        us = UserDAO.getInstance().GetUserById(userId);
-        email = findViewById(R.id.editTextTextEmailAddress);
-        email.setText(us.getEmail());
-        name = findViewById(R.id.editTextTextPersonName);
-        name.setText(us.getFullNamel());
-        password = findViewById(R.id.editTextTextPassword2);
-        password.setText(us.getPassword());
-        rePassword = findViewById(R.id.editTextTextPassword);
-        findViewById(R.id.btnClose).setOnClickListener(this::onQuit);
-        findViewById(R.id.btnSave).setOnClickListener(this::onSave);
-        imageView = findViewById(R.id.imageview_account_profile);
-        Bitmap b = convertBase64ToBitMap();
-        imageView.setImageBitmap(b);
-        findViewById(R.id.floatingActionButton).setOnClickListener(this::onEditImage);
+
+        // ✅ Dùng Thread để tránh lỗi mạng trên MainThread
+        int finalUserId = userId;
+        new Thread(() -> {
+            us = UserDAO.getInstance().GetUserById(finalUserId);
+
+            if (us == null) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Không thể tải dữ liệu người dùng", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+                return;
+            }
+
+            Bitmap b = convertBase64ToBitMap();
+
+            runOnUiThread(() -> {
+                email.setText(us.getEmail());
+                name.setText(us.getFullNamel());
+                password.setText(""); // không nên hiển thị password
+                rePassword.setText("");
+                imageView.setImageBitmap(b);
+            });
+        }).start();
     }
+
+
 
     public void onEditImage(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingProfileActivity.this);
@@ -147,21 +173,35 @@ public class SettingProfileActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
-        if (!password.getText().toString().equals(rePassword.getText().toString())) {
+        String pass = password.getText().toString();
+        String rePass = rePassword.getText().toString();
+
+        if (!pass.equals(rePass)) {
             rePassword.setError(getString(R.string.repass_not_match_pass));
             return;
         }
+
+        if (!pass.isEmpty()) {
+            String encryptedPass = UserUtil.md5(pass);
+            us.setPassword(encryptedPass);
+        }
+
         String avtURL = convertToBase64(imageBitmap);
         us.setAvatarUrl(avtURL);
-        us.setPassword(password.getText().toString());
         us.setFullNamel(name.getText().toString());
         us.setEmail(email.getText().toString());
-        int n = UserDAO.getInstance().udpateUser(us);
-        if (n > 0) {
-            Toast.makeText(this, getString(R.string.update_profile_user_sucess), Toast.LENGTH_SHORT).show();
-            onQuit(view);
-        } else {
-            name.setError(getString(R.string.update_profile_user_fail));
-        }
+
+        new Thread(() -> {
+            int n = UserDAO.getInstance().udpateUser(us);
+            runOnUiThread(() -> {
+                if (n > 0) {
+                    Toast.makeText(this, getString(R.string.update_profile_user_sucess), Toast.LENGTH_SHORT).show();
+                    onQuit(view);
+                } else {
+                    name.setError(getString(R.string.update_profile_user_fail));
+                }
+            });
+        }).start();
     }
+
 }
