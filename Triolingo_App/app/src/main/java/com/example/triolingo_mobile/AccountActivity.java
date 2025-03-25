@@ -1,6 +1,5 @@
 package com.example.triolingo_mobile;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,9 +8,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.triolingo_mobile.Course.ListCoursesActivity;
 import com.example.triolingo_mobile.DAO.StudentCourseDAO;
@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AccountActivity extends AppCompatActivity {
-    UserEntity us;
+    private UserEntity currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +35,48 @@ public class AccountActivity extends AppCompatActivity {
 
         if (json == null) {
             Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
         }
 
-        Gson gson = new Gson();
-        UserEntity userLogin = gson.fromJson(json, UserEntity.class);
-        int userId = userLogin.getId();
+        currentUser = new Gson().fromJson(json, UserEntity.class);
+        if (currentUser == null || currentUser.getId() == 0) {
+            Toast.makeText(this, "Dữ liệu người dùng không hợp lệ", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
 
+        // Tải dữ liệu người dùng từ DB
+        loadUserData(currentUser.getId());
+
+        // Các sự kiện click
+        findViewById(R.id.btnSetting).setOnClickListener(v -> {
+            startActivity(new Intent(this, SettingProfileActivity.class));
+        });
+
+        findViewById(R.id.btnLogout).setOnClickListener(v -> {
+            sharedPref.edit()
+                    .clear()
+                    .apply();
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear stack
+            startActivity(intent);
+            finish();
+        });
+
+        findViewById(R.id.btnManageCourses).setOnClickListener(v -> {
+            startActivity(new Intent(this, ListCoursesActivity.class));
+        });
+    }
+
+    private void loadUserData(int userId) {
         new Thread(() -> {
-            us = UserDAO.getInstance().GetUserById(userId);
+            UserEntity userFromDb = UserDAO.getInstance().GetUserById(userId);
 
-            if (us == null) {
+            if (userFromDb == null) {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Không tải được thông tin người dùng", Toast.LENGTH_SHORT).show();
                     finish();
@@ -54,38 +84,25 @@ public class AccountActivity extends AppCompatActivity {
                 return;
             }
 
-            int totalCourse = StudentCourseDAO.getInstance().countRows(StudentCourseDAO.DB_TABLE_NAME, "StudentId=" + us.getId());
-            int totalMark = StudentLessonDAO.getInstance().getMarkByUser(us.getId());
-            Bitmap profileImage = convertBase64ToBitmap(us.getAvatarUrl());
+            int totalCourses = StudentCourseDAO.getInstance().countRows(
+                    StudentCourseDAO.DB_TABLE_NAME, "StudentId=" + userId);
 
-            runOnUiThread(() -> {
-                ((TextView) findViewById(R.id.tv_name)).setText(us.getFullNamel());
-                ((TextView) findViewById(R.id.email)).setText(us.getEmail());
-                ((TextView) findViewById(R.id.totalCourse)).setText(String.valueOf(totalCourse));
-                ((TextView) findViewById(R.id.totalMark)).setText(String.valueOf(totalMark));
+            int totalMark = StudentLessonDAO.getInstance().getMarkByUser(userId);
+            Bitmap profileImage = convertBase64ToBitmap(userFromDb.getAvatarUrl());
 
-                if (profileImage != null) {
-                    ((CircleImageView) findViewById(R.id.image_profile)).setImageBitmap(profileImage);
-                }
-            });
+            runOnUiThread(() -> updateUI(userFromDb, totalCourses, totalMark, profileImage));
         }).start();
+    }
 
-        findViewById(R.id.btnSetting).setOnClickListener(v -> {
-            Intent intent = new Intent(AccountActivity.this, SettingProfileActivity.class);
-            startActivity(intent);
-        });
+    private void updateUI(UserEntity user, int totalCourses, int totalMark, Bitmap profileImage) {
+        ((TextView) findViewById(R.id.tv_name)).setText(user.getFullNamel());
+        ((TextView) findViewById(R.id.email)).setText(user.getEmail());
+        ((TextView) findViewById(R.id.totalCourse)).setText(String.valueOf(totalCourses));
+        ((TextView) findViewById(R.id.totalMark)).setText(String.valueOf(totalMark));
 
-        findViewById(R.id.btnLogout).setOnClickListener(v -> {
-            sharedPref.edit().clear().apply();
-            Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
-        findViewById(R.id.btnManageCourses).setOnClickListener(v -> {
-            Intent intent = new Intent(AccountActivity.this, ListCoursesActivity.class);
-            startActivity(intent);
-        });
+        if (profileImage != null) {
+            ((CircleImageView) findViewById(R.id.image_profile)).setImageBitmap(profileImage);
+        }
     }
 
     private Bitmap convertBase64ToBitmap(String base64String) {
@@ -101,5 +118,4 @@ public class AccountActivity extends AppCompatActivity {
             return null;
         }
     }
-
 }

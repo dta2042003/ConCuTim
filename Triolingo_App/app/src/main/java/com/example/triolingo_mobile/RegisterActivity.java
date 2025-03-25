@@ -82,8 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         uploadImgBtn.setOnClickListener(this::onChangeImage);
         avatarView.setOnClickListener(this::onChangeImage);
     }
