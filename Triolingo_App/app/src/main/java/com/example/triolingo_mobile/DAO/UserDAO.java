@@ -53,11 +53,14 @@ public class UserDAO extends DbContext {
     }
 
     public int udpateUser(UserEntity us) {
-        String sql = "update " + DB_TABLE_NAME + " set "
+        String sql = "UPDATE " + DB_TABLE_NAME + " SET "
                 + FULLNAME_COLUMN + " = ?, "
-                + EMAIL_COLUMN + " = ?,"
-                + AVATARURL_COLUMN + " = ?,"
-                + PASSWORD_COLUMN + " = ? where " + ID_COLUMN + " = ?";
+                + EMAIL_COLUMN + " = ?, "
+                + AVATARURL_COLUMN + " = ?, "
+                + PASSWORD_COLUMN + " = ?, "
+                + NOTE_COLUMN + " = ? "
+                + "WHERE " + ID_COLUMN + " = ?";
+
         int n = 0;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -65,13 +68,15 @@ public class UserDAO extends DbContext {
             pre.setString(2, us.getEmail());
             pre.setString(3, us.getAvatarUrl());
             pre.setString(4, us.getPassword());
-            pre.setInt(5, us.getId());
+            pre.setString(5, us.getNote());
+            pre.setInt(6, us.getId());
             n = pre.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return n;
     }
+
 
     public UserEntity Login(UserModel us) {
         String sql = "select * from " + DB_TABLE_NAME + " where " + EMAIL_COLUMN + " = '" + us.getEmail() + "' and " + PASSWORD_COLUMN + " = '" + us.getPassword()+"' AND STATUS>0";
