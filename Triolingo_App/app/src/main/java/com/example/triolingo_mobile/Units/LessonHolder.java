@@ -1,6 +1,7 @@
 package com.example.triolingo_mobile.Units;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -15,13 +16,14 @@ import com.example.triolingo_mobile.Model.LessonModel;
 import com.example.triolingo_mobile.R;
 import com.example.triolingo_mobile.Util.LessonUtil;
 import com.example.triolingo_mobile.View.CircularProgressView;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class LessonHolder extends RecyclerView.ViewHolder {
-    private CircularProgressView card;
+    private MaterialButton lessonButton;
     private TextView edit_id;
     private TextView edit_name;
     private Context context;
@@ -29,10 +31,13 @@ public class LessonHolder extends RecyclerView.ViewHolder {
     public LessonHolder(@NonNull View itemView, Context context) {
         super(itemView);
         this.context = context;
+        bindingView(itemView);
     }
 
-    private void bindingAction(View itemView) {
-        card.setOnClickListener(this::onClick);
+    private void bindingView(View itemView) {
+        edit_id = itemView.findViewById(R.id.lesson_id);
+        edit_name = itemView.findViewById(R.id.lesson_name);
+        lessonButton = itemView.findViewById(R.id.lesson_btn);
     }
 
     public void onClick(View view) {
@@ -46,22 +51,30 @@ public class LessonHolder extends RecyclerView.ViewHolder {
             LessonUtil.nextExercise( 0, 0, 0, 0, itemView.getContext());
         }
     }
-    private void bindingView(View itemView) {
-        edit_id = itemView.findViewById(R.id.lesson_id);
-        edit_name = itemView.findViewById(R.id.lesson_name);
-        card = itemView.findViewById(R.id.lesson_btn);
-        card.setProgress(lesson.isPreviousActived()&&lesson.getUserMark()>=0?
-                (lesson.getUserMark()==lesson.getTotalMark()?100:(((float)lesson.getUserMark()/lesson.getTotalMark())*100))
-                :lesson.getUserMark());
-    }
 
     public void setView(LessonModel lesson) {
-        this.lesson=lesson;
-        bindingView(itemView);
-        edit_id.setText(lesson.getId()+"");
+        this.lesson = lesson;
+        edit_id.setText(String.valueOf(lesson.getId()));
         edit_name.setText(lesson.getName());
-        if(lesson.isPreviousActived()){
-            bindingAction(itemView);
+
+        // Kiểm tra trạng thái bài học
+        if (!lesson.isPreviousActived()) {
+            // 🔴 Chưa học (bị khóa)
+            lessonButton.setEnabled(false);
+            lessonButton.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.gray));
+            lessonButton.setIconResource(R.drawable.ic_lock);
+        } else if (lesson.getUserMark() < lesson.getTotalMark()) {
+            // 🟡 Đang học (chưa hoàn thành)
+            lessonButton.setEnabled(true);
+            lessonButton.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.purple_700));
+            lessonButton.setIconResource(R.drawable.ic_play);
+            lessonButton.setOnClickListener(this::onClick);
+        } else {
+            // ✅ Đã học xong
+            lessonButton.setEnabled(true);
+            lessonButton.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.green));
+            lessonButton.setIconResource(R.drawable.ic_check);
+            lessonButton.setOnClickListener(this::onClick);
         }
     }
 }
