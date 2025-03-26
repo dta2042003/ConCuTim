@@ -12,6 +12,11 @@
     <color name="correct_text">#58A700</color>
     <color name="correct_background">#D7FFB8</color>
     <color name="incorrect_background">#FFDFE0</color>
+    <color name="primary">#4B0082</color> <!-- Tím đậm -->
+    <color name="primaryDark">#2E005C</color> <!-- Tím đen -->
+    <color name="accent">#7F00FF</color> <!-- Tím sáng hơn để làm điểm nhấn -->
+    <color name="rippleEffect">#FFC107</color>
+    <color name="green">#4CAF50</color>
     <color name="incorrect_text">#EC0B1B</color>
     <color name="btn_check_ans">#E5E5E5</color>
     <color name="text_check_ans">#B4AFAF</color>
