@@ -89,6 +89,7 @@ public class StudentLessonDAO extends DbContext {
         return null;
     }
 
+    //Lấy điểm tổng đã đạt được trong Course của Student
     public int getMarkByUser(int userId){
         Integer sum= 0;
         String sql ="select sum(Mark) as Mark from "+DB_TABLE_NAME+" where StudentCourseId in (select id from StudentCourse where StudentId="+userId+")";

@@ -17,7 +17,6 @@ import java.util.List;
 public class LessonAdapter extends RecyclerView.Adapter<LessonHolder>{
     private List<LessonModel> list;
     private RecyclerView recyclerView;
-    private boolean leftToRight = true;
     private int itemWidth,firstItemPosition;
 
     public LessonAdapter(List<LessonModel> _list, RecyclerView _recyclerView) {
