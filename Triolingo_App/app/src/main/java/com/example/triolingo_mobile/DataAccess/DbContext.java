@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class DbContext {
 
-    private final String connectionURL = "jdbc:jtds:sqlserver://192.168.1.119:1433;databasename=TriolingoDatabase;user=sa;password=Bopbin123;";
+    private final String connectionURL = "jdbc:jtds:sqlserver://192.168.1.12:1433;databasename=ConCuTim;user=sa;password=123;";
 
     public Connection conn = ConnectionClass();
 

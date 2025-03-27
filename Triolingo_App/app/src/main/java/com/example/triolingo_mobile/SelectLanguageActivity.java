@@ -71,28 +71,27 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 UserEntity user = gson.fromJson(userJson, UserEntity.class);
 
-                // Parse note JSON hiện tại
-                UserNote userNote;
+                // Parse note hiện tại (nếu có)
+                UserNote note;
                 try {
-                    userNote = gson.fromJson(user.getNote(), UserNote.class);
+                    note = gson.fromJson(user.getNote(), UserNote.class);
                 } catch (Exception e) {
-                    userNote = new UserNote(); // fallback nếu lỗi
+                    note = new UserNote();
                 }
 
-                if (userNote == null) userNote = new UserNote();
-                userNote.setLanguage(selectedLanguage); // cập nhật ngôn ngữ
+                if (note == null) note = new UserNote();
 
-                // Gán lại note dạng JSON vào user
-                String updatedNoteJson = gson.toJson(userNote);
-                user.setNote(updatedNoteJson);
+                // ✅ Gán ngôn ngữ và intro = false ngay từ đầu
+                note.setLanguage(selectedLanguage);
+                note.setIntro(false);
 
-                // Cập nhật DB + SharedPreferences
+                String noteJson = gson.toJson(note);
+                user.setNote(noteJson);
+
+                // Cập nhật DB và SharedPreferences
                 new Thread(() -> {
                     UserDAO.getInstance().udpateUser(user);
-
-                    prefs.edit()
-                            .putString("user", gson.toJson(user))
-                            .apply();
+                    prefs.edit().putString("user", gson.toJson(user)).apply();
 
                     runOnUiThread(() -> {
                         Toast.makeText(this, "Đã chọn: " + selectedLanguage, Toast.LENGTH_SHORT).show();
@@ -102,7 +101,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 }).start();
             }
         });
-
 
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(SelectLanguageActivity.this, IntroStep2Activity.class);

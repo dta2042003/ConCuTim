@@ -15,11 +15,13 @@ import com.example.triolingo_mobile.DAO.CourseDAO;
 import com.example.triolingo_mobile.DAO.LessonDAO;
 import com.example.triolingo_mobile.DAO.StudentCourseDAO;
 import com.example.triolingo_mobile.DAO.StudentLessonDAO;
+import com.example.triolingo_mobile.DAO.UserDAO;
 import com.example.triolingo_mobile.Model.Course;
 import com.example.triolingo_mobile.Model.LessonModel;
 import com.example.triolingo_mobile.Model.StudentCourse;
 import com.example.triolingo_mobile.Model.StudentLesson;
 import com.example.triolingo_mobile.Model.UserEntity;
+import com.example.triolingo_mobile.Model.UserNote;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -121,13 +123,49 @@ public class LevelRecommendationActivity extends AppCompatActivity {
                 chatBubble.setText("Không tìm thấy trình độ người dùng.");
             }
         }
-
         continueButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, AccountActivity.class));
-            finish();
+            if (userJson != null) {
+                Gson gson = new Gson();
+                UserEntity user = gson.fromJson(userJson, UserEntity.class);
+
+                // Parse note cũ nếu có
+                UserNote note;
+                try {
+                    note = gson.fromJson(user.getNote(), UserNote.class);
+                    if (note == null) note = new UserNote();
+                } catch (Exception e) {
+                    note = new UserNote(); // fallback nếu lỗi
+                }
+
+                // Cập nhật intro = true, giữ lại dữ liệu cũ
+                note.setIntro(true);
+
+                String noteJson = gson.toJson(note);
+                user.setNote(noteJson);
+
+                new Thread(() -> {
+                    UserDAO.getInstance().udpateUser(user);
+                    Log.d("IntroDebug", "✅ Đã cập nhật note = " + noteJson);
+
+                    prefs.edit()
+                            .putString("user", gson.toJson(user))
+                            .apply();
+
+                    runOnUiThread(() -> {
+                        Intent intent = new Intent(LevelRecommendationActivity.this, AccountActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
+                }).start();
+            }
         });
 
-        backButton.setOnClickListener(v -> onBackPressed());
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LevelRecommendationActivity.this, SelectLevelActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private String getMessageBasedOnLevel(String level) {

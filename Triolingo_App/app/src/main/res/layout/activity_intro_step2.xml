@@ -31,10 +31,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            android:gravity="center"
             android:background="@drawable/chat_bubble_background"
             android:padding="16dp"
             android:textSize="16sp"
-            android:elevation="4dp" />
+            android:elevation="4dp"
+            android:textStyle="bold"/>
 
         <!-- Mũi tên chat -->
         <ImageView

@@ -1,25 +1,19 @@
 package com.example.triolingo_mobile.Model;
 
 public class UserNote {
-    private boolean intro;
     private String language;
+    private String level;
+    private Boolean intro;
 
-    public UserNote() {
-    }
+    public UserNote() {}
 
-    public UserNote(boolean intro, String language) {
-        this.intro = intro;
+    public UserNote(String language, String level, Boolean intro) {
         this.language = language;
-    }
-
-    public boolean isIntro() {
-        return intro;
-    }
-
-    public void setIntro(boolean intro) {
+        this.level = level;
         this.intro = intro;
     }
 
+    // Getter & Setter
     public String getLanguage() {
         return language;
     }
@@ -27,4 +21,21 @@ public class UserNote {
     public void setLanguage(String language) {
         this.language = language;
     }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public Boolean getIntro() {
+        return intro;
+    }
+
+    public void setIntro(Boolean intro) {
+        this.intro = intro;
+    }
 }
+

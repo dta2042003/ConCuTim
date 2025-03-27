@@ -32,7 +32,8 @@
             android:background="@drawable/chat_bubble_background"
             android:padding="16dp"
             android:textSize="16sp"
-            android:elevation="4dp" />
+            android:elevation="4dp"
+            android:textStyle="bold"/>
 
         <ImageView
             android:layout_width="20dp"

@@ -34,16 +34,31 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Nếu đã login trước đó, chỉ cần chuyển đến Login screen, không kiểm tra isFirstLoginShown nữa
         SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
         String userJson = prefs.getString("user", null);
 
         if (userJson != null) {
-            Log.d(TAG, "Đã login → điều hướng IntroActivity");
-            startActivity(new Intent(this, IntroActivity.class));
+            UserEntity userEntity = new Gson().fromJson(userJson, UserEntity.class);
+            UserNote userNote = null;
+
+            try {
+                userNote = new Gson().fromJson(userEntity.getNote(), UserNote.class);
+            } catch (Exception e) {
+                Log.w(TAG, "❌ Note không hợp lệ, mặc định là chưa xem intro");
+            }
+
+            if (userNote == null || !userNote.getIntro()) {
+                Log.d(TAG, "➡️ Điều hướng IntroActivity (user đã đăng nhập nhưng chưa xem intro)");
+                startActivity(new Intent(this, IntroActivity.class));
+            } else {
+                Log.d(TAG, "➡️ Điều hướng AccountActivity (user đã xem intro)");
+                startActivity(new Intent(this, AccountActivity.class));
+            }
+
             finish();
             return;
         }
+
 
         setContentView(R.layout.activity_login);
 
@@ -159,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.w(TAG, "❌ Note không phải định dạng JSON hợp lệ.");
         }
 
-        if (userNote == null || !userNote.isIntro()) {
+        if (userNote == null || !userNote.getIntro()) {
             Log.d(TAG, "➡️ Điều hướng: IntroActivity (intro=false hoặc lỗi JSON)");
             startActivity(new Intent(this, IntroActivity.class));
         } else {

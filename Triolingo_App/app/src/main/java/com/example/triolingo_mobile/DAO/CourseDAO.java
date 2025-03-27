@@ -19,6 +19,31 @@ public class CourseDAO extends DbContext {
         return CourseDAO.instance;
     }
 
+    public List<Course> getTop3CoursesByStudentId(int studentId) {
+        List<Course> list = new ArrayList<>();
+        String sql = "SELECT TOP 3 c.* FROM Course c " +
+                "JOIN StudentCourse sc ON c.Id = sc.CourseId " +
+                "WHERE sc.StudentId = " + studentId +
+                " ORDER BY sc.Id DESC";
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                Course c = new Course();
+                c.setName(rs.getString("Name"));
+                c.setDescription(rs.getString("Description"));
+                c.setNote(rs.getString("Note"));
+                c.setRateAverage(rs.getFloat("RateAverage"));
+                c.setStatus(rs.getInt("Status"));
+                c.setId(rs.getInt("Id"));
+                list.add(c);
+            }
+            rs.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Course> getList(String search) {
         List<Course> list = new ArrayList<>();
         String sql = "Select * from "+DB_TABLE_NAME+" where  "+search;
