@@ -22,43 +22,48 @@ import com.example.con_cu_tim.R;
 import java.util.List;
 
 public class ListUnits extends AppCompatActivity {
-
     Course course;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_units);
+
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id",0);
-        Course cour = CourseDAO.getInstance().getDetail(id);
-        ((TextView)findViewById(R.id.course_name)).setText(cour.getName());
-        Button btn = findViewById(R.id.btn_backToAccount);
-        ((ImageView)findViewById(R.id.course_return)).setOnClickListener(new View.OnClickListener() {
+        int id = intent.getIntExtra("id", 0);
+
+        // Gọi dữ liệu bất đồng bộ
+        CourseDAO.getInstance().getDetailAsync(id, new CourseDAO.OnCourseDetailListener() {
             @Override
-            public void onClick(View view) {
-                Intent returnCourses = new  Intent(ListUnits.this, ListCoursesActivity.class);
-                startActivity(returnCourses);
+            public void onCourseLoaded(Course cour) {
+                if (cour != null) {
+                    ((TextView) findViewById(R.id.course_name)).setText(cour.getName());
+                    handleCourseData(cour, id);
+                }
             }
         });
-        if (cour==null||cour.getDescription() == null || cour.getDescription().equals("") || cour.getDescription().trim().equals("")){
-            btn.setVisibility(View.INVISIBLE);
-        }else{
-            course=cour;
-            btn.setOnClickListener(this::onClickGuide);
-        }
-        List<UnitModel> listResult = UnitDAO.getInstance().getList("Status>0"+(id==0?"":" AND CourseId="+id));
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_unit);
+    }
+
+    private void handleCourseData(Course cour, int id) {
+        Button btn = findViewById(R.id.btn_backToAccount);
+        ((ImageView) findViewById(R.id.course_return)).setOnClickListener(view -> {
+            Intent returnCourses = new Intent(ListUnits.this, ListCoursesActivity.class);
+            startActivity(returnCourses);
+        });
+
+        List<UnitModel> listResult = UnitDAO.getInstance().getList("Status>0" + (id == 0 ? "" : " AND CourseId=" + id));
+        RecyclerView recyclerView = findViewById(R.id.list_unit);
         UnitAdapter adapter = new UnitAdapter(listResult);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(ListUnits.this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ListUnits.this));
         recyclerView.setVisibility(View.VISIBLE);
     }
-    public void onClickGuide(View v) {
-        Intent intent = new  Intent(this, CourseDescriptionActivity.class);
-        intent.putExtra("id", course.getId());
-        intent.putExtra("name", course.getName());
-        intent.putExtra("description", course.getDescription());
-        startActivity(intent);
+
+    public void onClickGuide(View view) {
+        if (course != null) {
+            Intent intent = new Intent(ListUnits.this, CourseDescriptionActivity.class);
+            intent.putExtra("courseId", course.getId());
+            startActivity(intent);
+        }
     }
+
 }
