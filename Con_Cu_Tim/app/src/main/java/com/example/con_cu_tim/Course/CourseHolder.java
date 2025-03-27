@@ -112,10 +112,6 @@ public class CourseHolder extends RecyclerView.ViewHolder {
         edit_id.setText(cour.getId()+"");
         edit_name.setText(cour.getName()+"");
         edit_rate.setText(cour.getRateAverage()+"");
-        if (cour==null||cour.getDescription() == null || cour.getDescription().equals("") || cour.getDescription().trim().equals("")){
-            btn.setVisibility(View.INVISIBLE);
-        }else{
-            btn.setOnClickListener(this::onClickGuide);
-        }
+        btn.setVisibility(View.INVISIBLE);
     }
 }

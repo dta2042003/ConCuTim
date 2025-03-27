@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.con_cu_tim.Course.ListCoursesActivity;
@@ -34,6 +35,7 @@ public class UnitHolder extends RecyclerView.ViewHolder {
     private CardView card_view, card_view_not;
     private Context context;
     private UnitModel unit;
+
 
     public UnitHolder(@NonNull View itemView, Context context) {
         super(itemView);

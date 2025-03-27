@@ -42,31 +42,18 @@
                 android:id="@+id/course_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="188dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="453K"
                 android:textAlignment="center"
                 android:textColor="#EDEDF7"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/course_return"
-                app:layout_constraintEnd_toStartOf="@id/btn_backToAccount"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
 
-            <!-- Nút Detail -->
-            <Button
-                android:id="@+id/btn_backToAccount"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:backgroundTint="#5A48A5"
-                android:text="@string/btn_desc"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                app:cornerRadius="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="15dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/course_return"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
