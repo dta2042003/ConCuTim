@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.*;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -43,44 +44,34 @@ public class RegisterActivity extends AppCompatActivity {
         uploadImgBtn = findViewById(R.id.uploadImageButton);
         avatarView = findViewById(R.id.avatarView);
 
-        (findViewById(R.id.backBtn)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
+        (findViewById(R.id.backBtn)).setOnClickListener(view -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        registerBtn.setOnClickListener(view -> {
+            if (checkRegisterInfo()) {
+                String email = email_txt.getText().toString().trim();
+                String name = name_txt.getText().toString().trim();
+                String password = password_txt.getText().toString().trim();
+
+                // 🔒 Mã hóa mật khẩu bằng MD5
+                String hashedPassword = UserUtil.md5(password);
+
+                AccountModel newAccount = new AccountModel(
+                        name,
+                        email,
+                        hashedPassword,
+                        avatarUrl,
+                        1,
+                        null
+                );
+
+                // Run the account registration task in the background
+                new RegisterTask(newAccount).execute();
             }
         });
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkRegisterInfo()) {
-                    String email = email_txt.getText().toString().trim();
-                    String name = name_txt.getText().toString().trim();
-                    String password = password_txt.getText().toString().trim();
-
-                    // 🔒 Mã hóa mật khẩu bằng MD5
-                    String hashedPassword = UserUtil.md5(password);
-
-                    AccountModel newAccount = new AccountModel(
-                            name,
-                            email,
-                            hashedPassword,
-                            avatarUrl,
-                            1,
-                            null
-                    );
-
-                    if (AccountDAO.getInstance().registerAccount(newAccount)) {
-                        Toast.makeText(view.getContext(), "Tạo tài khoản thành công! Vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(view.getContext(), "Tạo tài khoản thất bại! Vui lòng thử lại sau", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
         uploadImgBtn.setOnClickListener(this::onChangeImage);
         avatarView.setOnClickListener(this::onChangeImage);
     }
@@ -88,27 +79,25 @@ public class RegisterActivity extends AppCompatActivity {
     void onChangeImage(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
         builder.setTitle("Chọn ảnh từ");
-        builder.setItems(new CharSequence[]{"Chụp ảnh", "Chọn ảnh", "Xoá ảnh đã chọn"}, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, 0);
-                        break;
-                    case 1:
-                        Intent intent2 = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent2, 1);
-                        break;
-                    case 2:
-                        avatarUrl = null;
-                        avatarView.setImageResource(R.mipmap.ic_launcher_round);
-                        break;
-                }
+        builder.setItems(new CharSequence[]{"Chụp ảnh", "Chọn ảnh", "Xoá ảnh đã chọn"}, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 0);
+                    break;
+                case 1:
+                    Intent intent2 = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent2, 1);
+                    break;
+                case 2:
+                    avatarUrl = null;
+                    avatarView.setImageResource(R.mipmap.ic_launcher_round);
+                    break;
             }
         });
         builder.show();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -145,14 +134,9 @@ public class RegisterActivity extends AppCompatActivity {
             email_txt.setError("Email không được để trống");
             return false;
         }
-        if (!UserDAO.getInstance().IsValidEmail(email)) {
-            email_txt.setError("Email không hợp lệ");
-            return false;
-        }
-        if (!UserDAO.getInstance().IsExistEmail(email)) {
-            email_txt.setError("Email đã tồn tại");
-            return false;
-        }
+
+        // Check if email exists asynchronously
+        new CheckEmailExistenceTask(email).execute();
 
         // Tên
         if (name.isEmpty()) {
@@ -187,11 +171,56 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-
     void saveBase64Str(Bitmap bm) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         avatarUrl = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+    }
+
+    private class CheckEmailExistenceTask extends AsyncTask<Void, Void, Boolean> {
+        private final String email;
+
+        CheckEmailExistenceTask(String email) {
+            this.email = email;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return UserDAO.getInstance().IsExistEmail(email);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean exists) {
+            super.onPostExecute(exists);
+            if (exists) {
+                email_txt.setError("Email đã tồn tại");
+            }
+        }
+    }
+
+    private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
+        private final AccountModel newAccount;
+
+        RegisterTask(AccountModel newAccount) {
+            this.newAccount = newAccount;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return AccountDAO.getInstance().registerAccount(newAccount);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (success) {
+                Toast.makeText(RegisterActivity.this, "Tạo tài khoản thành công! Vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
+            } else {
+                Toast.makeText(RegisterActivity.this, "Tạo tài khoản thất bại! Vui lòng thử lại sau", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
