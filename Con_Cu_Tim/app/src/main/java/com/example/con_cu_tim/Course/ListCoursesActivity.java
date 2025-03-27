@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.con_cu_tim.AccountActivity;
 import com.example.con_cu_tim.DAO.CourseDAO;
@@ -32,6 +33,13 @@ public class ListCoursesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_courses);
+        // Set up the back button click event
+        ImageView btnBackToAccount = findViewById(R.id.btn_backToAccount);
+        btnBackToAccount.setOnClickListener(v -> {
+            Intent intent = new Intent(ListCoursesActivity.this, AccountActivity.class);
+            startActivity(intent);
+            finish(); // Optional: Closes ListCoursesActivity to prevent stacking
+        });
         GetText();
     }
     public void GetText() {
