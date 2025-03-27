@@ -101,6 +101,9 @@
         <activity android:name=".LevelRecommendationActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".ChangePasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
             android:name=".AccountActivity"
             android:exported="true">

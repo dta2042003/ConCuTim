@@ -89,7 +89,12 @@ public class SelectLevelActivity extends AppCompatActivity {
             }
         });
 
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SelectLevelActivity.this, SelectLanguageActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void highlightSelection(LinearLayout parent, View selected) {

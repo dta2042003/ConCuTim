@@ -1,0 +1,19 @@
+<!-- res/menu/menu_settings.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_update_profile"
+        android:title="Cập nhật hồ sơ"
+        android:icon="@drawable/ic_edit_profile" />
+
+    <item
+        android:id="@+id/menu_change_password"
+        android:title="Đổi mật khẩu"
+        android:icon="@drawable/ic_password" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Đăng xuất"
+        android:icon="@drawable/ic_logout" />
+
+</menu>

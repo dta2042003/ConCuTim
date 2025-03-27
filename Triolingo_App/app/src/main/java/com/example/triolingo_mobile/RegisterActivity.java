@@ -136,32 +136,58 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     boolean checkRegisterInfo() {
-        if (email_txt.getText().toString().trim().isEmpty()) {
-            email_txt.setError(getString(R.string.email_is_empty));
+        String email = email_txt.getText().toString().trim();
+        String name = name_txt.getText().toString().trim();
+        String password = password_txt.getText().toString();
+        String confirmPw = confirm_pw_txt.getText().toString();
+
+        // Email
+        if (email.isEmpty()) {
+            email_txt.setError("Email không được để trống");
             return false;
         }
-        if(!UserDAO.getInstance().IsValidEmail(email_txt.getText().toString())){
-            email_txt.setError(getString(R.string.email_invalid));
+        if (!UserDAO.getInstance().IsValidEmail(email)) {
+            email_txt.setError("Email không hợp lệ");
             return false;
         }
-        if(!UserDAO.getInstance().IsExistEmail(email_txt.getText().toString())){
-            email_txt.setError(getString(R.string.email_exist));
+        if (!UserDAO.getInstance().IsExistEmail(email)) {
+            email_txt.setError("Email đã tồn tại");
             return false;
         }
-        if (name_txt.getText().toString().trim().isEmpty()) {
-            name_txt.setError(getString(R.string.name_is_empty));
+
+        // Tên
+        if (name.isEmpty()) {
+            name_txt.setError("Tên không được để trống");
             return false;
         }
-        if (password_txt.getText().toString().trim().isEmpty()) {
-            password_txt.setError(getString(R.string.password_is_empty));
+        if (!name.matches("^[\\p{L} ]+$")) { // chỉ chữ và khoảng trắng
+            name_txt.setError("Tên chỉ được chứa chữ");
             return false;
         }
-        if (confirm_pw_txt.getText().toString().compareTo(password_txt.getText().toString()) != 0) {
-            confirm_pw_txt.setError(getString(R.string.repass_not_match));
+
+        // Mật khẩu
+        if (password.isEmpty()) {
+            password_txt.setError("Mật khẩu không được để trống");
             return false;
         }
+        if (password.length() < 6) {
+            password_txt.setError("Mật khẩu phải từ 6 ký tự");
+            return false;
+        }
+        if (!password.matches(".*[A-Za-z].*") || !password.matches(".*\\d.*")) {
+            password_txt.setError("Mật khẩu phải chứa cả chữ và số");
+            return false;
+        }
+
+        // Xác nhận mật khẩu
+        if (!confirmPw.equals(password)) {
+            confirm_pw_txt.setError("Mật khẩu không khớp");
+            return false;
+        }
+
         return true;
     }
+
 
     void saveBase64Str(Bitmap bm) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

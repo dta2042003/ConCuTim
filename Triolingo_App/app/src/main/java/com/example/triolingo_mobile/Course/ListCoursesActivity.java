@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.triolingo_mobile.API.APICourse;
-import com.example.triolingo_mobile.API.RetrofitClient;
 import com.example.triolingo_mobile.AccountActivity;
 import com.example.triolingo_mobile.DAO.CourseDAO;
 import com.example.triolingo_mobile.DAO.StudentCourseDAO;
