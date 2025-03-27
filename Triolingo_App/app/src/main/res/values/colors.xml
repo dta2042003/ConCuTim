@@ -19,7 +19,10 @@
     <color name="btn_ans_choice">#DDF4FF</color>
     <color name="incorrect_ans">#885E62</color>
     <color name="correct_ans">#C7F396</color>
-
+    <color name="light_gray">#D3D3D3</color>
+    <color name="green">#4CAF50</color>  <!-- Màu xanh lá -->
+    <color name="red">#F44336</color>    <!-- Màu đỏ -->
+    <color name="primary">#6200EE</color> <!-- Màu chính -->
     <color name="colorPrimary">#49BEFF</color>
     <color name="colorPrimaryDark">#65DCE5</color>
     <color name="colorAccent">#0D5D98</color>

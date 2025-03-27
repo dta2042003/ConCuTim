@@ -25,15 +25,14 @@
 
         <TextView
             android:id="@+id/lesson_text_ques"
-            android:layout_width="383dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Please choose the correct meaning of &quot;Potato&quot;"
+            android:text="Please choose the correct meaning of 'Potato'"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include" />
 
@@ -41,68 +40,59 @@
             android:id="@+id/flow_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="180dp"
+            android:layout_marginBottom="160dp"
             android:orientation="horizontal"
-            app:constraint_referenced_ids="lesson_ans_1, lesson_ans_2,
-lesson_ans_3, lesson_ans_4"
+            app:constraint_referenced_ids="lesson_ans_1,lesson_ans_2,lesson_ans_3,lesson_ans_4"
             app:flow_horizontalGap="14dp"
-            app:flow_horizontalStyle="packed"
+            app:flow_horizontalStyle="spread_inside"
             app:flow_verticalGap="14dp"
-
             app:flow_wrapMode="chain"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/lesson_ans_1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_btn_ans"
             android:textColor="@color/black"
             app:backgroundTint="@null"
-            app:layout_constraintEnd_toStartOf="@+id/lesson_ans_2"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintWidth_percent="0.45"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/flow_layout" />
 
         <Button
             android:id="@+id/lesson_ans_2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_btn_ans"
             android:textColor="@color/black"
             app:backgroundTint="@null"
+            app:layout_constraintWidth_percent="0.45"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/lesson_ans_1"
             app:layout_constraintTop_toTopOf="@id/flow_layout" />
 
         <Button
             android:id="@+id/lesson_ans_3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:background="@drawable/custom_btn_ans"
             android:textColor="@color/black"
             app:backgroundTint="@null"
-            app:layout_constraintEnd_toStartOf="@+id/lesson_ans_4"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintWidth_percent="0.45"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lesson_ans_1" />
 
         <Button
             android:id="@+id/lesson_ans_4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:background="@drawable/custom_btn_ans"
             android:textColor="@color/black"
             app:backgroundTint="@null"
+            app:layout_constraintWidth_percent="0.45"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/lesson_ans_3"
             app:layout_constraintTop_toBottomOf="@+id/lesson_ans_2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
