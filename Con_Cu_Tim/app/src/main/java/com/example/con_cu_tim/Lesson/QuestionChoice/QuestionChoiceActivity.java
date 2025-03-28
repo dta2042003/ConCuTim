@@ -43,12 +43,16 @@ public class QuestionChoiceActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lesson_question_choice);
+
+        //Take view from layout
         FrameLayout main = findViewById(R.id.main_layout);
         main.getForeground().setAlpha(0);
 
+        // Take progress bar from header
         ConstraintLayout header = (ConstraintLayout) findViewById(R.id.include);
         ProgressBar progressBar = header.findViewById(R.id.lesson_progressBar);
 
+        //Take data from intent
         Intent intent = getIntent();
         ExerciseDAO exDao = ExerciseDAO.getInstance();
 
@@ -60,14 +64,16 @@ public class QuestionChoiceActivity extends AppCompatActivity {
         progressBar.setProgress(curProgress);
         Question question = LessonUtil.getListQuestion().get(quesNo);
         ArrayList<AnswerModel> ansList = exDao.getAnswerOfQuestion(question.getId(),"STATUS>0");
-        Collections.shuffle(ansList);
+        Collections.shuffle(ansList); // change index of answer
         String ques = question.getQuestion1();
         totalPoint += question.getMark();
 
+        //If not enough 4 answer -> input more answer
         while (ansList.size()<4){
             ansList.add(new AnswerModel(-1, -1, "", 1, false));
         }
 
+        //View in layout
         TextView textQues = findViewById(R.id.lesson_text_ques);
         String displayAns = ques + "\"";
         textQues.setText(displayAns);
@@ -84,6 +90,7 @@ public class QuestionChoiceActivity extends AppCompatActivity {
             }
         });
 
+        // Handle for choose answer
         int i = 1;
         for (AnswerModel choice : ansList) {
             String idName = "lesson_ans_" + i;
@@ -92,7 +99,7 @@ public class QuestionChoiceActivity extends AppCompatActivity {
             if(choice.getId()>0){
                 listButton.add(btn);
                 btn.setText(choice.getAnswer());
-                if (choice.getId() == ans.getId()) crt_btn = btn;
+                if (choice.getId() == ans.getId()) crt_btn = btn; // save correct answer to button
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -117,6 +124,8 @@ public class QuestionChoiceActivity extends AppCompatActivity {
                         btnCheck.setClickable(true);
                         btnCheck.setTextColor(ContextCompat.getColorStateList(QuestionChoiceActivity.this, R.color.white));
                         btnCheck.setBackgroundTintList(ContextCompat.getColorStateList(QuestionChoiceActivity.this, R.color.correct_text));
+
+                        //Handle for check answer
                         btnCheck.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -133,12 +142,14 @@ public class QuestionChoiceActivity extends AppCompatActivity {
                                     curPoint += question.getMark();
                                 } else {
                                     ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.answer_incorrect);
-                                    cl.setVisibility(View.VISIBLE);
+                                    cl.setVisibility(View.VISIBLE); // change status of constrain layout to visible -> view
                                     continueBtn = findViewById(R.id.lesson_btn_continue0);
                                     crt_btn.setBackgroundTintList(ContextCompat.getColorStateList(QuestionChoiceActivity.this, R.color.correct_ans));
                                     btn.setBackgroundTintList(ContextCompat.getColorStateList(QuestionChoiceActivity.this, R.color.incorrect_ans));
                                 }
                                 progressBar.setProgress(curProgress + progressPercent);
+
+                                //Continue the lesson exercise
                                 continueBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
