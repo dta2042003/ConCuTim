@@ -4,17 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     android:foreground="@drawable/custom_blur_popup"
     android:id="@+id/main_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         android:id="@+id/lay">
 
         <include
             android:id="@+id/include"
-            layout="@layout/lesson_header" />
+            layout="@layout/lesson_header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            android:backgroundTint="@color/card_background"
+            app:layout_constraintTop_toBottomOf="@id/include"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/word_match_continue"
+            android:layout_marginTop="12dp"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/question_recyclerview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    tools:listitem="@layout/item_question" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/answer_recyclerview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    tools:listitem="@layout/item_answer" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/word_match_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_check"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/btn_check_ans"
+            app:cornerRadius="50dp"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <include
             android:id="@+id/include2"
@@ -23,49 +80,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/word_match_continue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/question_recyclerview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/answer_recyclerview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/word_match_continue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/custom_btn_continue"
-            android:backgroundTint="@color/btn_check_ans"
-            android:clickable="true"
-            android:text="@string/btn_check"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </FrameLayout>

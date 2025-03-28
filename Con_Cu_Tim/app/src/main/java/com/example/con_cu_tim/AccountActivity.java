@@ -41,7 +41,7 @@ public class AccountActivity extends AppCompatActivity {
 
         ImageView iconSettings = findViewById(R.id.iconSettings);
         iconSettings.setOnClickListener(view -> {
-            Log.d("DEBUG_ICON", "iconSettings clicked"); // ✅ Log để kiểm tra click
+            Log.d("DEBUG_ICON", "iconSettings clicked");
             showSettingsMenu(view);
         });
 
